@@ -1,0 +1,30 @@
+rtmp {
+    server {
+        listen 1935;
+        chunk_size 4096;
+        max_message 1M;
+    
+        application streaming {
+            live on;
+
+            exec ffmpeg -i rtmp://localhost/streaming/$name
+              -c:a aac -b:a 32k  -c:v libx264 -b:v 128K -f flv rtmp://localhost/hls/$name_low
+              -c:a aac -b:a 64k  -c:v libx264 -b:v 256k -f flv rtmp://localhost/hls/$name_mid
+              -c:a aac -b:a 128k -c:v libx264 -b:v 512K -f flv rtmp://localhost/hls/$name_hi;
+        }
+
+        application hls {
+            live on;
+            hls on;
+            hls_path /etc/nginx/live;
+            hls_nested on;
+
+            hls_fragment 6s;
+            hls_playlist_length 30s;
+
+            hls_variant _low BANDWIDTH=160000;
+            hls_variant _mid BANDWIDTH=320000;
+            hls_variant _hi  BANDWIDTH=640000;
+        }
+    }
+}
