@@ -1,0 +1,21 @@
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
+public class App {
+    public static void main(String[] args) throws Exception {
+        
+        System.out.println(CompareTime("09:00:00", "11:00:00"));
+    }
+
+    public static String CompareTime(String timeToCompare, String referenceTime){
+        // Define a DateTimeFormatter to parse the time
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        // Parse the times as LocalTime objects
+        LocalTime time = LocalTime.parse(timeToCompare, formatter);
+        LocalTime reference = LocalTime.parse(referenceTime, formatter);
+        // Compare the times
+        return time.isAfter(reference) && time.isBefore(reference) ? "true" : "false";
+    }
+}
+
+// Path: src/App.java
