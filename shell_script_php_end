@@ -1,0 +1,22 @@
+<?php
+$jarName = 'program.jar'; // Replace with your actual jar filename
+// Find the process ID (PID) of the Java process running the .jar file
+$pidCommand = "pgrep -f $jarName";
+exec($pidCommand, $output);
+
+if (!empty($output)) {
+    $processId = intval($output[0]);
+    // Terminate the Java process and its children
+    //$killCommand = "pkill -TERM -P $processId";
+    $killCommand = "kill -2 {$processId}";
+    exec($killCommand, $killOutput, $killReturn);
+
+    if ($killReturn === 0) {
+        echo "Successfully killed the Java .jar file process and its children.";
+    } else {
+        echo "Failed to kill the Java .jar file process and its children.";
+    }
+} else {
+    echo "No running process found for the Java .jar file.";
+}
+?>
