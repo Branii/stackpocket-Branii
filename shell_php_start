@@ -1,0 +1,24 @@
+<?php
+$jarPath = './program.jar'; // Replace this with the actual path to your .jar file
+
+// Command to execute the Java .jar file
+$command = 'java -jar ' . escapeshellarg($jarPath);
+
+// Execute the command
+$output = [];
+$returnVar = -1;
+
+// Execute the command and capture output
+exec($command, $output, $returnVar);
+
+// Check if execution was successful
+if ($returnVar === 0) {
+    // Command executed successfully
+    echo "Java .jar file executed successfully.";
+    // Output from the executed command
+    echo "<pre>" . implode("\n", $output) . "</pre>";
+} else {
+    // Command failed
+    echo "Failed to execute Java .jar file.";
+}
+?>
