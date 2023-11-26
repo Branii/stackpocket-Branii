@@ -1,0 +1,133 @@
+package com.pivo.meedji;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class MainActivity extends AppCompatActivity {
+
+    RecyclerView mRecyclerView;
+    List<DataClass> dataClassList;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        dataClassList = new ArrayList<>();
+        mRecyclerView = findViewById(R.id.recyclerview);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://pesewacoins.com/dev/api/v1/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        DataApi dataApi = retrofit.create(DataApi.class);
+        Call<List<DataClass>> dataclass = dataApi.getData();
+        dataclass.enqueue(new Callback<List<DataClass>>() {
+            @Override
+            public void onResponse(Call<List<DataClass>> call, Response<List<DataClass>> response) {
+                if(!response.isSuccessful()){
+                    Toast.makeText(MainActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                assert response.body() != null;
+                List<DataClass> updatedDataClassList = new ArrayList<>(response.body());
+                for (DataClass dataClass : updatedDataClassList) {
+                    String firstname = dataClass.getFirstname();
+                    String lastname  = dataClass.getLastnane();
+                    String email     = dataClass.getEmail();
+                    String mobile    = dataClass.getMobile();
+                    DataClass dataC = new DataClass(firstname,lastname,email,mobile);
+                    dataClassList.add(dataC);
+                }
+
+                mRecyclerView.setAdapter(new DataClassAdaptor(dataClassList,getApplicationContext()));
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this,RecyclerView.VERTICAL,false));
+
+            }
+
+            @Override
+            public void onFailure(Call<List<DataClass>> call, Throwable t) {
+                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+//        // Instantiate the RequestQueue.
+//        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+//
+//
+//        dataClassList = new ArrayList<>();
+//        mRecyclerView = findViewById(R.id.recyclerview);
+//
+//
+//        // Request a string response from the provided URL.
+//        StringRequest stringRequest = new StringRequest(Request.Method.GET, new BaseUrl().getBase(),
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//
+//                        try {
+//                            JSONArray jsonArray = new JSONArray(response);
+//                            for (int i = 0; i < jsonArray.length(); i++) {
+//                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+//                                String firstname = jsonObject.getString("firstname");
+//                                String lastname  = jsonObject.getString("lastname");
+//                                String email     = jsonObject.getString("email");
+//                                String mobile    = jsonObject.getString("mobile");
+//                                DataClass dataClass = new DataClass(firstname,lastname,email,mobile);
+//                                dataClassList.add(dataClass);
+//                            }
+//
+//                            DataClassAdaptor adaptor = new DataClassAdaptor(dataClassList,getApplicationContext());
+//                            mRecyclerView.setAdapter(adaptor);
+//                            mRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this,RecyclerView.VERTICAL,false));
+
+//
+//                        } catch (JSONException e) {
+//                            throw new RuntimeException(e);
+//                        }
+//
+//                    }
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//        // Add the request to the RequestQueue.
+//        queue.add(stringRequest);
+
+    }
+}
