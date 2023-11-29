@@ -1,0 +1,8 @@
+public function getAllProduct ($page,$limit) : Array | String { 
+            $startpoint = ($page * $limit) - $limit;
+            $sql = "SELECT * FROM product_tbl ORDER BY pid DESC LIMIT {$startpoint},{$limit}";
+            $stmt = (new Database)->openlink()->prepare($sql);
+            $stmt->execute();
+            $data = $stmt->fetchAll(PDO::FETCH_OBJ);
+            return ($data);
+        }
