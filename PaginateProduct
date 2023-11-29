@@ -1,0 +1,22 @@
+      public function paginateProduct(Mixed $page, Mixed $limit) {
+            $sql = "SELECT * FROM product_tbl ORDER BY pid DESC"; 
+            $stmt = (new Database)->openlink()->prepare($sql); 
+            $stmt->execute();
+            $totalCustomers = $stmt->fetchAll(PDO::FETCH_OBJ);
+            $total = count($totalCustomers);  
+            $pages = ceil($total/$limit) ?? 1;
+            $nxt = $page + 1;
+            $pre = $page - 1;
+            if($page == $pages){
+                $nxt = $pages;
+            }
+            if($page == 1){
+                $pre = 1;
+            }
+            
+            echo "<li class='page-item'><a class='page-link' href='products.php?page=$pre'><</a></li>";
+            for($i=1;$i<=$pages;$i++){
+                echo "<li class='page-item'><a class='page-link' href='products.php?page=$i'>{$i}</a></li>";
+            }
+            echo "<li class='page-item'><a class='page-link' href='products.php?page=$nxt'>></a></li>";
+        }
