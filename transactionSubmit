@@ -1,0 +1,19 @@
+jQuery(function(){
+    
+    $(".submit").on("click",function(){
+
+        const params = {};
+        $('.myInputClass').each(function() { // recieve all the form element val
+            params[$(this).attr('name')] = $(this).val();
+        });
+        const newData = Object.fromEntries( // filter the array keys where ---
+            Object.entries(params).filter(([key, value]) => value !== "---")
+        );
+        isEmpty =  Object.keys(newData).length > 0 ? true : false; // check if the array is empty
+        isEmpty ? $.post("work.php", newData, res => console.log(res)) : ""//send the data to the server
+       
+    })
+
+})
+
+// Path: work.php
