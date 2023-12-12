@@ -1,0 +1,21 @@
+  public function paginateProduct(Mixed $currentPage, Mixed $itemsPerPage) {
+           
+            $sql = "SELECT COUNT(*) as total FROM product_tbl"; 
+            $stmt = (new Database)->openlink()->prepare($sql); 
+            $stmt->execute();
+            $total = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+            $pages = ceil($total / $itemsPerPage) ?? 1;
+        
+            $pagination = [
+                'prev' => ($currentPage > 1) ? $currentPage - 1 : 1,
+                'next' => ($currentPage < $pages) ? $currentPage + 1 : $pages,
+                'pages' => []
+            ];
+        
+            for ($i = 1; $i <= $pages; $i++) {
+                $pagination['pages'][] = $i;
+            }
+        
+            return $pagination;
+
+        }
