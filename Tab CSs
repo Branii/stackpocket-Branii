@@ -1,0 +1,35 @@
+/* Example CSS for tabs */
+.tabs {
+  display: flex;
+  padding:10px;
+}
+
+.tabs button {
+  padding: 5px 16px;
+  border: 1px solid #ccc;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  background-color: #f2f2f2;
+  cursor: pointer;
+}
+
+.tabs button.active-tab {
+  background-color: #cccccc;
+  font-weight: bold;
+}
+
+.tab-content {
+  position: relative;
+ margin-left: 10px;
+ bottom: 10px;
+ padding:10px;
+ height: 200px;
+ border:solid 1px #E0E0E0;
+ background-color: #fff;
+}
+
+.content{
+  width: 40%;
+  padding: 20px;
+  /* background-color: red; */
+}
