@@ -1,0 +1,255 @@
+<?php 
+require_once '1kserver/model/user.php';
+if((new User)->CheckService(1) == "On"){
+  include "updating.php";
+  exit;
+}?>
+<!DOCTYPE html>
+<html lang="en" oncontextmenu="return falsex">
+   <head>
+      <?php include "header.php";?>
+      <link rel="stylesheet" href="css/modal.css">
+      <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+      <style>
+         .number {
+         display: inline-block;
+         width: 30px; /* Set the width and height of each number */
+         height: 30px;
+         text-align: center;
+         color:white;
+         margin:1px;
+         line-height: 30px;
+         font-size: 12px;
+         background-size: cover;
+         background-repeat: no-repeat;
+         background-image: url('green.png');
+         }
+         .mother {
+         background-color: rgb(90,12,122,.1);
+         color: #fff;
+         padding: 10px;
+         bottom:20px;
+         position:relative;
+         border: 5px solid RGB(158, 11, 128,.2);
+         border-radius: 0px;
+         box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+         /* Add any other styles you want to mimic */
+         }
+
+         .dialog{
+            border: 10px solid transparent; /* Set the border width */
+            border-image: linear-gradient(to right, #46197A, #D5098E) 1;
+            border-radius:10px;
+         }
+
+         .mytable > tr > td {
+            height:20;
+         }
+
+         .pure-menu-item {
+            list-style-type: none;
+            text-decoration:none;
+            border:none;
+         }
+
+         
+      </style>
+   </head>
+   <body data-spy="scroll" data-target="#navbar" class="static-layout">
+      <div class='lmask'></div>
+     
+      <!-- Navigation -->
+      <nav class="navbar navbar-expand-lg static-top" style="background-color: #58197D !important;">
+         <div class="container"  style="background-color: transparent !important;">
+            <a class="navbar-brand" href="home.html">
+            <img src="img/logo.jpg" width="130px" height="40px" style="box-shadow:rgba(0,0,0,0,.16) 0px 1px 4px;border-radius: 8px;border:solid 5px #fff">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+               <ul class="navbar-nav ms-auto">
+                  <li class="nav-item">
+                     <a class="nav-link text-white" aria-current="page" href="home">Home</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link text-white " aria-current="page" href="product">Products</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link text-white " aria-current="page" href="#" style="border-bottom:solid 2px #fff;">Results</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link activee" aria-current="page" href="api">Game API</a>
+                  </li>
+               </ul>
+            </div>
+         </div>
+      </nav>
+
+      <div class="jumbotron jumbotron-single d-flex align-items-center" style="background-image: url('images/result.jpg');">
+      
+      <div class="container mother" style="display:none;padding:30px">
+
+      <div>
+
+      Title: <span class="title"></span><span class="holder" hidden>1KBALL 5D</span> <span class="currIdd" hidden>10018</span> <span id="stream" style='display:none'>
+      <i class='bx bx-video bx-flashing' style='color:#fcf8f8;font-size:25px;position:relative;top:6px;cursor:pointer' ></i></span>
+      <p style="text-align: left;"  class="details"></p>
+
+      </div>
+
+
+         <div class="row" style="">
+         <div class="col-sm-2" style="padding:0">
+         <table class="table table-bordered" style='margin-top:6.2px'>
+         <thead class="mytable" style="border-top-left-radius: 20px;border-top-right-radius: 20px;background-image: linear-gradient(to right, #34267D , #34267D);">
+            <tr>
+               <th scope="col" style="text-align:center">Game Draws</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr>
+               <td scope="row" style="text-align:center">
+               <li class="pure-menu-item name pure-menu-has-children pure-menu-allow-hover">
+                 <a href="#" class="pure-menu-link1 text-white hvr-grow"> 5D GAME SERIES </a>
+                 <ul class="pure-menu-children class5d"> </ul>
+               </li>
+               </td>
+            </tr>
+            <tr>
+            <td scope="row" style="text-align:center">
+               <li class="pure-menu-item name pure-menu-has-children pure-menu-allow-hover">
+                 <a href="#" class="pure-menu-link1 text-white hvr-grow"> 3D GAME SERIES </a>
+                 <ul class="pure-menu-children class3d"> </ul>
+               </li>
+               </td>
+            </tr>
+            <tr>
+            <td scope="row" style="text-align:center">
+               <li class="pure-menu-item name pure-menu-has-children pure-menu-allow-hover">
+                 <a href="#" class="pure-menu-link1 text-white hvr-grow"> FAST3 GAME SERIES </a>
+                 <ul class="pure-menu-children classf3"> </ul>
+               </li>
+               </td>
+            </tr>
+            <tr>
+            <td scope="row" style="text-align:center">
+               <li class="pure-menu-item name pure-menu-has-children pure-menu-allow-hover">
+                 <a href="#" class="pure-menu-link1 text-white hvr-grow"> KENO GAME SERIES </a>
+                 <ul class="pure-menu-children classkeno"> </ul>
+               </li>
+               </td>
+            </tr>
+            <tr>
+            <td scope="row" style="text-align:center">
+               <li class="pure-menu-item name pure-menu-has-children pure-menu-allow-hover">
+                 <a href="#" class="pure-menu-link1 text-white hvr-grow"> PK 10 GAME SERIES </a>
+                 <ul class="pure-menu-children classpk"> </ul>
+               </li>
+               </td>
+            </tr>
+            <tr>
+            <td scope="row" style="text-align:center">
+               <li class="pure-menu-item name pure-menu-has-children pure-menu-allow-hover">
+                 <a href="#" class="pure-menu-link1 text-white hvr-grow"> PC 28 GAME SERIES </a>
+                 <ul class="pure-menu-children classpc"> </ul>
+               </li>
+               </td>
+            </tr>
+            <tr>
+            <td scope="row" style="text-align:center">
+               <li class="pure-menu-item name pure-menu-has-children pure-menu-allow-hover">
+                 <a href="#" class="pure-menu-link1 text-white hvr-grow"> 11x5 GAME SERIES </a>
+                 <ul class="pure-menu-children class11"> </ul>
+               </li>
+               </td>
+            </tr>
+            <tr>
+            <td scope="row" style="text-align:center">
+               <li class="pure-menu-item name pure-menu-has-children pure-menu-allow-hover">
+                 <a href="#" class="pure-menu-link1 text-white hvr-grow"> 49x7 GAME SERIES </a>
+                 <ul class="pure-menu-children class49"> </ul>
+               </li>
+               </td>
+            </tr>
+         </table>
+         
+         </div>
+
+         <div class="col-sm-10" style="padding:0">
+         <table class="table table-bordered table-hover" id="example" style="width:100%">
+         <thead class="" style="border-top-left-radius: 20px;border-top-right-radius: 20px;background-image: linear-gradient(to right, #34267D , #BE039F);">
+            <tr>
+               <th scope="col" style="text-align:center">Draw Period</th>
+               <th scope="col" style="text-align:center">Draw Date</th>
+               <th scope="col" style="text-align:center">Draw Number</th>
+               <th scope="col" style="text-align:center">Draw Time</th>
+            </tr>
+         </thead>
+         <tbody></tbody>
+         </table>
+         </div>
+         </div>
+      </div>
+      </div>
+
+      <footer class="mastfoot my-3">
+         <div class="inner container">
+            <div class="row">
+               <div class="col-lg-4 col-md-12 d-flex align-items-center">
+               </div>
+               <div class="col-lg-4 col-md-12 d-flex align-items-center">
+                  <p class="mx-auto text-center mb-0">&copy; 1KBALL UI GAME</p>
+               </div>
+            </div>
+         </div>
+      </footer>
+
+      <div id="dialog" class="dialog" style="min-width:500px; min-height:350px;z-index:1">
+         <div class="titlebar">Dialog Title...</div>
+         <button name="close"></button>
+         <div class="content"><video src="" id="video"></video></div>
+      </div>
+
+
+      <script src="vendor/bootstrap/popper.min.js"></script>
+      <script src="vendor/bootstrap/bootstrap.min.js"></script>
+      <script src="js/aos.js"></script>
+      <!-- BootStrap JS -->
+      <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+      <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+      <!-- <link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css"/>
+         <script type="text/javascript" src="DataTables/datatables.min.js"></script> -->
+      <!-- <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+      <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>  -->
+
+      <script src="lib/nifty.js"></script>
+      <script src="js/comp.js"></script>
+      <!-- Custom JS -->
+      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+      <script>
+         // For Moving
+         $('#movableDialog').draggable({
+          handle: ".modal-header"
+         });
+         
+         // For Resizing
+         $('#resizableContent').resizable({
+          minHeight: 200,
+          minWidth: 200
+         });
+      </script>
+       
+       <script src="result.js"></script>
+       <script src="js/bounce.min.js"></script>
+       <script src="js/modal.js"></script>
+       <script>
+        
+       </script>
+     
+   </body>
+</html>
