@@ -1,0 +1,173 @@
+user www-data;
+worker_processes 4;
+pid /run/nginx.pid;
+include /etc/nginx/modules-enabled/*.conf;
+
+events {
+	worker_connections 10000;
+	# multi_accept on;
+}
+
+rtmp {
+	server {
+		listen 1935;
+		chunk_size 4096;
+		allow publish all;
+		allow play all;
+		ping 30s;  
+                notify_method get;
+		
+		application livexxx {
+			live on;
+			on_publish http://199.188.203.241:80/1kball/exec/rtmp_auth.php;
+			record off;
+			#exec ffmpeg -i rtmp://localhost/live/$name -c:v libx264 -x264opts keyint=60:no-scenecut -b:v 125k -c:a copy -s 426x240 -r 30 -sws_flags bilinear -tune zerolatency -preset veryfast -f flv rtmp://localhost/show/$name;
+			
+			exec ffmpeg -i rtmp://localhost/streaming/$name
+                   	-c:a aac -b:a 32k  -c:v libx264 -b:v 128K -f flv rtmp://localhost/hls/$name_low
+                  	-c:a aac -b:a 64k  -c:v libx264 -b:v 256k -f flv rtmp://localhost/hls/$name_mid
+                  	-c:a aac -b:a 128k -c:v libx264 -b:v 512K -f flv rtmp://localhost/hls/$name_hi;
+			
+			
+	        }
+	        
+	        application live {
+	        	live on;
+	        	# Turn on HLS
+		        hls on;
+		        hls_type live;
+		        hls_path /tmp/hls/;
+		        hls_fragment 1s;
+		        hls_playlist_length 10s;
+			#meta copy;
+			on_publish http://199.188.203.241:80/1kserver/exec/rtmp_auth.php;
+			deny play all;
+			hls_variant _subsd BANDWIDTH=400000;
+	        }
+     }
+}
+
+
+
+
+
+http {
+
+    log_format custom '$remote_addr - $remote_user [$time_local] "$request"'
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$request_time" '
+                      'publish="$request_body"';
+
+	#
+	# Basic Settings
+	#
+
+	sendfile off;
+	tcp_nopush on;
+	types_hash_max_size 2048;
+	directio 512;
+	# server_tokens off;
+
+	# server_names_hash_bucket_size 64;
+	# server_name_in_redirect off;
+
+
+	include /etc/nginx/mime.types;
+	default_type application/octet-stream;
+
+	##
+	# SSL Settings
+	##
+
+	ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3; # Dropping SSLv3, ref: POODLE
+	ssl_prefer_server_ciphers on;
+
+	##
+	# Logging Settings
+	##
+
+	access_log /var/log/nginx/access.log;
+	error_log /var/log/nginx/error.log;
+
+	##
+	# Gzip Settings
+	##
+
+	gzip on;
+
+	# gzip_vary on;
+	# gzip_proxied any;
+	# gzip_comp_level 6;
+	# gzip_buffers 16 8k;
+	# gzip_http_version 1.1;
+	# gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+
+	#
+	# Virtual Host Configs
+	#
+
+	include /etc/nginx/conf.d/*.conf;
+	include /etc/nginx/sites-enabled/*;
+	
+	 server {
+	    listen 8080;
+	    listen 443 ssl;
+            
+	    location / {
+
+	    root /tmp/;
+
+	     }
+	     
+     	
+	    location /hls {
+
+	    types {
+	      application/vnd.apple.mepgurl m3u8;
+	      video/mp2t ts;
+	      video/mp4 mp4;
+	      text/html html;
+	      application/dash+xml mpd;
+	    }
+	    
+	    add_header 'Access-Control-Allow-Origin' '*';
+	    add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+	    add_header 'Access-Control-Allow-Headers' 'Origin, X-Requested-With, Content-Type, Accept, Authorization';
+	    add_header 'Access-Control-Allow-Credentials' 'true';
+	    if ($request_method = 'OPTIONS') {
+		add_header 'Access-Control-Max-Age' 1728000;
+		add_header 'Content-Type' 'text/plain; charset=utf-8';
+		add_header 'Content-Length' 0;
+		return 204;
+	    }
+	    
+	     root /tmp/hls;
+	     index index.m3u8 index.ts;
+            
+            
+	}
+    }
+}
+
+
+#mail {
+#	# See sample authentication script at:
+#	# http://wiki.nginx.org/ImapAuthenticateWithApachePhpScript
+#
+#	# auth_http localhost/auth.php;
+#	# pop3_capabilities "TOP" "USER";
+#	# imap_capabilities "IMAP4rev1" "UIDPLUS";
+#
+#	server {
+#		listen     localhost:110;
+#		protocol   pop3;
+#		proxy      on;
+#	}
+#
+#	server {
+#		listen     localhost:143;
+#		protocol   imap;
+#		proxy      on;
+#	}
+#}
+
