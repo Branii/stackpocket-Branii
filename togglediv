@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.0/css/boxicons.min.css'/>
+    <title>Document</title>
+    <style>
+
+        .mother{
+            width: 300px;
+            height: 400px;
+            position: relative;
+        }
+        .content{
+            height: 400px;
+            width: 300px;
+            background-color: red;
+            position: absolute;
+            transition: height 0.5s ease;
+            bottom: 0;
+        }
+        .header{
+            height: 60px;
+            width: 300px;
+            background-color: blue;
+            position: relative;
+            bottom: 0;
+        }
+        .minimise{
+            height: 60px;
+        }
+
+        .bx{
+            cursor: grap;
+        }
+
+    </style>
+</head>
+<body>
+
+  <div class="mother">
+    <div class="content">
+    <div class="header" style="text-align:center">
+        <i class='bx bx-menu' style="font-size:20px;color:#fff;margin-top:15px;"></i>
+    </div>
+    </div>
+  </div>
+    <script>
+        $(()=>{
+            $(".bx").click(()=>{
+                $(".content").toggleClass('minimise')
+            })
+        })
+    </script>
+</body>
+</html>
